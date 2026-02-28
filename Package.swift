@@ -87,6 +87,7 @@ let package = Package(
             ]
         ),
         .testTarget(name: "ScoreCoreTests", dependencies: ["ScoreCore"]),
+        .testTarget(name: "ScoreTests", dependencies: ["Score"]),
         .testTarget(name: "ScoreHTMLTests", dependencies: ["ScoreHTML"]),
         .testTarget(name: "ScoreCSSTests", dependencies: ["ScoreCSS"]),
         .testTarget(name: "ScoreRouterTests", dependencies: ["ScoreRouter"]),
