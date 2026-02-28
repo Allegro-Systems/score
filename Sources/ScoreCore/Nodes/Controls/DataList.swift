@@ -1,0 +1,53 @@
+/// A node that provides a list of suggested values for an associated text input.
+///
+/// `DataList` renders as the HTML `<datalist>` element. It supplies an
+/// autocomplete dropdown of predefined suggestions that appear as the user
+/// types into a text ``Input`` whose `list` attribute matches this element's
+/// `id`. Unlike a ``Select``, the user is not restricted to the listed values
+/// and may still type any freeform text.
+///
+/// Typical uses include:
+/// - Suggesting common search terms in a search field
+/// - Offering pre-populated city names while still allowing custom entries
+/// - Providing airport codes or currency symbols as autocomplete hints
+///
+/// ### Example
+///
+/// ```swift
+/// Input(type: .text, name: "browser", list: "browsers-list")
+/// DataList(id: "browsers-list") {
+///     Option(value: "Chrome") { "" }
+///     Option(value: "Firefox") { "" }
+///     Option(value: "Safari") { "" }
+///     Option(value: "Edge") { "" }
+/// }
+/// ```
+///
+/// - Important: The `id` of the `DataList` must match the `list` attribute of
+///   the associated input for the browser to display the suggestions.
+public struct DataList<Content: Node>: Node {
+
+    /// The unique identifier that links this datalist to an input's `list`
+    /// attribute.
+    ///
+    /// If `nil`, no `id` attribute is rendered and the datalist cannot be
+    /// associated with any input via the standard HTML mechanism.
+    public let id: String?
+
+    /// The ``Option`` nodes that define the autocomplete suggestions.
+    public let content: Content
+
+    /// Creates a datalist of autocomplete suggestions.
+    ///
+    /// - Parameters:
+    ///   - id: A unique identifier that matches the `list` attribute of the
+    ///     input field this datalist serves.
+    ///   - content: A node builder closure providing ``Option`` children that
+    ///     represent the suggested values.
+    public init(id: String? = nil, @NodeBuilder content: () -> Content) {
+        self.id = id
+        self.content = content()
+    }
+
+    public var body: Never { fatalError() }
+}
