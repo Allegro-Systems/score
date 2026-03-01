@@ -40,7 +40,13 @@ let package = Package(
         ),
         .target(name: "ScoreHTML", dependencies: ["ScoreCore"]),
         .target(name: "ScoreCSS", dependencies: ["ScoreCore"]),
-        .target(name: "ScoreRouter", dependencies: ["ScoreCore"]),
+        .target(
+            name: "ScoreRouter",
+            dependencies: [
+                "ScoreCore",
+                .product(name: "HTTPTypes", package: "swift-http-types"),
+            ]
+        ),
         .target(
             name: "ScoreRuntime",
             dependencies: [
