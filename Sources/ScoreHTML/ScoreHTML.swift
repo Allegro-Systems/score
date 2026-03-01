@@ -1,1 +1,1 @@
-public enum _ScoreHTMLModule {}
+@_exported import ScoreCore
