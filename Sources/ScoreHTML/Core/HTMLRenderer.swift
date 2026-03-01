@@ -27,8 +27,23 @@ import ScoreCore
 ///   static HTML. Interactive behaviour requires the Score runtime.
 public struct HTMLRenderer: Sendable {
 
+    /// An optional closure that resolves CSS class names for modified nodes.
+    ///
+    /// When set, the renderer queries this closure for each `ModifiedNode`
+    /// encountered during rendering. If the closure returns a non-nil class
+    /// name, the node's content is wrapped in an element with that class.
+    public var classInjector: (@Sendable ([any ModifierValue]) -> String?)?
+
     /// Creates a new HTML renderer.
     public init() {}
+
+    /// Creates an HTML renderer with a class injector.
+    ///
+    /// - Parameter classInjector: A closure that maps modifier arrays to
+    ///   CSS class names. Return `nil` for modifier sets that produce no CSS.
+    public init(classInjector: (@Sendable ([any ModifierValue]) -> String?)?) {
+        self.classInjector = classInjector
+    }
 
     /// Renders the given node tree into an HTML string.
     ///

@@ -272,7 +272,7 @@ import Testing
 
     let app = DemoApp()
     #expect(app.pages.count == 1)
-    #expect(app.theme == nil)
+    #expect(app.theme is DefaultTheme)
     #expect(app.metadata == nil)
     #expect(app.controllers.isEmpty)
 }

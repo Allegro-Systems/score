@@ -51,7 +51,13 @@ let package = Package(
             name: "ScoreRuntime",
             dependencies: [
                 "ScoreCore",
+                "ScoreHTML",
+                "ScoreCSS",
+                "ScoreRouter",
                 .product(name: "NIOCore", package: "swift-nio"),
+                .product(name: "NIOPosix", package: "swift-nio"),
+                .product(name: "NIOHTTP1", package: "swift-nio"),
+                .product(name: "HTTPTypes", package: "swift-http-types"),
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "Metrics", package: "swift-metrics"),
             ]
@@ -97,5 +103,12 @@ let package = Package(
         .testTarget(name: "ScoreHTMLTests", dependencies: ["ScoreHTML"]),
         .testTarget(name: "ScoreCSSTests", dependencies: ["ScoreCSS"]),
         .testTarget(name: "ScoreRouterTests", dependencies: ["ScoreRouter"]),
+        .testTarget(
+            name: "ScoreRuntimeTests",
+            dependencies: [
+                "ScoreRuntime",
+                .product(name: "NIOEmbedded", package: "swift-nio"),
+            ]
+        ),
     ]
 )

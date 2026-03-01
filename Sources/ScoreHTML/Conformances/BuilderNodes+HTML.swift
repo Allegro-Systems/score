@@ -14,11 +14,19 @@ extension TextNode: HTMLRenderable {
     }
 }
 
-/// Passes through to the wrapped content, discarding modifier metadata.
+/// Renders the wrapped content, injecting a CSS scope class when available.
 extension ModifiedNode: HTMLRenderable {
-    /// Renders the underlying content node, ignoring any attached modifiers.
+    /// Renders the underlying content node wrapped in a scoped `<div>` when
+    /// the renderer's class injector returns a class name for this node's
+    /// modifiers. Otherwise renders the content directly.
     func renderHTML(into output: inout String, renderer: HTMLRenderer) {
-        renderer.write(content, to: &output)
+        if let className = renderer.classInjector?(modifiers) {
+            output.append("<div class=\"\(className)\">")
+            renderer.write(content, to: &output)
+            output.append("</div>")
+        } else {
+            renderer.write(content, to: &output)
+        }
     }
 }
 

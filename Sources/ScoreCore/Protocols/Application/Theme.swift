@@ -290,6 +290,19 @@ public protocol Theme: Sendable {
 
     /// Optional dark-mode patch values applied on top of the base theme.
     var dark: (any ThemePatch)? { get }
+
+    /// Named theme variants keyed by theme name.
+    ///
+    /// Each entry produces a `[data-theme="<name>"]` scoped CSS block.
+    /// Theme switching is handled by user-authored JavaScript that sets
+    /// the `data-theme` attribute on `<html>`.
+    var named: [String: any ThemePatch] { get }
+}
+
+extension Theme {
+
+    /// Default implementation returns no named variants.
+    public var named: [String: any ThemePatch] { [:] }
 }
 
 /// A protocol for partial theme overrides.

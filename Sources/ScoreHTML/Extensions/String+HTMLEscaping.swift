@@ -3,7 +3,7 @@
 /// The escape context determines which characters must be replaced with
 /// HTML entity references. Attribute values require additional escaping
 /// of double-quote characters beyond what text content needs.
-enum HTMLEscapeContext {
+package enum HTMLEscapeContext {
     /// The string will be used as text content between HTML tags.
     case text
     /// The string will be used inside a double-quoted HTML attribute value.
@@ -19,7 +19,7 @@ extension String {
     ///   or an attribute value.
     /// - Returns: An escaped string safe for embedding in the specified
     ///   HTML context.
-    func escaped(for context: HTMLEscapeContext) -> String {
+    package func escaped(for context: HTMLEscapeContext) -> String {
         var result = ""
         result.reserveCapacity(count)
 
@@ -40,13 +40,13 @@ extension String {
 
     /// A copy of this string with `&`, `<`, and `>` escaped for safe use
     /// as text content within an HTML document.
-    var htmlEscaped: String {
+    package var htmlEscaped: String {
         escaped(for: .text)
     }
 
     /// A copy of this string with `&`, `<`, `>`, and `"` escaped for safe
     /// use inside a double-quoted HTML attribute value.
-    var attributeEscaped: String {
+    package var attributeEscaped: String {
         escaped(for: .attribute)
     }
 }

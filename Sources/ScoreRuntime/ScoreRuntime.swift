@@ -1,1 +1,4 @@
-public enum _ScoreRuntimeModule {}
+@_exported import ScoreCSS
+@_exported import ScoreCore
+@_exported import ScoreHTML
+@_exported import ScoreRouter

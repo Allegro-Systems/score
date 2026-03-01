@@ -61,9 +61,9 @@ extension Application {
 
     /// The active application theme used for rendering.
     ///
-    /// The default implementation returns `nil`, which signals that renderer
-    /// modules should use their built-in theme defaults.
-    public var theme: (any Theme)? { nil }
+    /// The default implementation returns ``DefaultTheme``, which provides
+    /// a complete set of design tokens out of the box.
+    public var theme: (any Theme)? { DefaultTheme() }
 
     /// The default document metadata inherited by pages.
     ///
