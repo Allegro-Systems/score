@@ -134,3 +134,65 @@ private struct ActionPage: Page {
     let visibleState = states.first { $0.name == "visible" }
     #expect(visibleState?.initialValue == "true")
 }
+
+private struct BoolFalsePage: Page {
+    static let path = "/bool-false"
+    @State var active = false
+    var body: some Node { Text(verbatim: "x") }
+}
+
+@Test func boolFalseStateEmitsJSFalse() {
+    let states = JSEmitter.extractStates(from: BoolFalsePage())
+    #expect(states.first?.initialValue == "false")
+}
+
+private struct ConditionalEventPage: Page {
+    static let path = "/conditional-event"
+    @State var show = true
+    var body: some Node {
+        if show {
+            Text(verbatim: "shown").on(.click, "go")
+        } else {
+            Text(verbatim: "hidden")
+        }
+    }
+}
+
+@Test func conditionalNodeElseBranchWalkedForEvents() {
+    var page = ConditionalEventPage()
+    page.show = false
+    let bindings = JSEmitter.extractEventBindings(from: page.body)
+    #expect(bindings.isEmpty)
+}
+
+private struct OptionalEventPage: Page {
+    static let path = "/optional-event"
+    @State var show = true
+    var body: some Node {
+        if show {
+            Text(verbatim: "shown").on(.click, "go")
+        }
+    }
+}
+
+@Test func optionalNodeNilBranchWalkedForEvents() {
+    var page = OptionalEventPage()
+    page.show = false
+    let bindings = JSEmitter.extractEventBindings(from: page.body)
+    #expect(bindings.isEmpty)
+}
+
+private struct ForEachEventPage: Page {
+    static let path = "/foreach-event"
+    var body: some Node {
+        ForEachNode([1, 2, 3]) { i in
+            Text(verbatim: "\(i)").on(.click, "go")
+        }
+    }
+}
+
+@Test func forEachNodeWalkedForEvents() {
+    let bindings = JSEmitter.extractEventBindings(from: ForEachEventPage().body)
+    #expect(bindings.count == 3)
+    #expect(bindings.allSatisfy { $0.handler == "go" })
+}

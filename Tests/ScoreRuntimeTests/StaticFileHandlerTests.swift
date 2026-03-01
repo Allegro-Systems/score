@@ -23,6 +23,63 @@ import Testing
     #expect(StaticFileHandler.mimeType(for: "xyz") == "application/octet-stream")
 }
 
+@Test func mimeTypeForHTML() {
+    #expect(StaticFileHandler.mimeType(for: "html") == "text/html; charset=utf-8")
+}
+
+@Test func mimeTypeForJSON() {
+    #expect(StaticFileHandler.mimeType(for: "json") == "application/json")
+}
+
+@Test func mimeTypeForJPG() {
+    #expect(StaticFileHandler.mimeType(for: "jpg") == "image/jpeg")
+    #expect(StaticFileHandler.mimeType(for: "jpeg") == "image/jpeg")
+}
+
+@Test func mimeTypeForGIF() {
+    #expect(StaticFileHandler.mimeType(for: "gif") == "image/gif")
+}
+
+@Test func mimeTypeForSVG() {
+    #expect(StaticFileHandler.mimeType(for: "svg") == "image/svg+xml")
+}
+
+@Test func mimeTypeForICO() {
+    #expect(StaticFileHandler.mimeType(for: "ico") == "image/x-icon")
+}
+
+@Test func mimeTypeForWoff() {
+    #expect(StaticFileHandler.mimeType(for: "woff") == "font/woff")
+}
+
+@Test func mimeTypeForTTF() {
+    #expect(StaticFileHandler.mimeType(for: "ttf") == "font/ttf")
+}
+
+@Test func mimeTypeForOTF() {
+    #expect(StaticFileHandler.mimeType(for: "otf") == "font/otf")
+}
+
+@Test func mimeTypeForWebP() {
+    #expect(StaticFileHandler.mimeType(for: "webp") == "image/webp")
+}
+
+@Test func mimeTypeForAVIF() {
+    #expect(StaticFileHandler.mimeType(for: "avif") == "image/avif")
+}
+
+@Test func mimeTypeForXML() {
+    #expect(StaticFileHandler.mimeType(for: "xml") == "application/xml")
+}
+
+@Test func mimeTypeForMap() {
+    #expect(StaticFileHandler.mimeType(for: "map") == "application/json")
+}
+
+@Test func mimeTypeForWasm() {
+    #expect(StaticFileHandler.mimeType(for: "wasm") == "application/wasm")
+}
+
 @Test func rejectsDirectoryTraversal() {
     let result = StaticFileHandler.serve(relativePath: "../etc/passwd", from: "/tmp")
     #expect(result == nil)
