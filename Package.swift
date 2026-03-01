@@ -60,7 +60,8 @@ let package = Package(
                 .product(name: "HTTPTypes", package: "swift-http-types"),
                 .product(name: "Logging", package: "swift-log"),
                 .product(name: "Metrics", package: "swift-metrics"),
-            ]
+            ],
+            resources: [.copy("Resources")]
         ),
         .target(name: "ScoreDB", dependencies: ["ScoreCore"]),
         .target(

@@ -14,7 +14,8 @@ import ScoreHTML
 /// 2. Run `CSSCollector` to extract scoped CSS rules
 /// 3. Build a class injector closure from the collected rules
 /// 4. Run `HTMLRenderer` with the injector to produce HTML with class attributes
-/// 5. Call `DocumentAssembler` to merge everything into a complete document
+/// 5. Run `JSEmitter` to produce client-side reactive scripts (if any)
+/// 6. Call `DocumentAssembler` to merge everything into a complete document
 ///
 /// ### Example
 ///
@@ -33,11 +34,14 @@ public enum PageRenderer: Sendable {
     ///   - page: The page to render.
     ///   - metadata: The application-level metadata, if any.
     ///   - theme: The application theme, if any.
+    ///   - environment: The build environment, used to control JS emission.
+    ///     Defaults to ``Environment/current``.
     /// - Returns: A complete HTML document string.
     public static func render(
         page: some Page,
         metadata: (any Metadata)?,
-        theme: (any Theme)?
+        theme: (any Theme)?,
+        environment: Environment = .current
     ) -> String {
         let body = page.body
 
@@ -54,6 +58,14 @@ public enum PageRenderer: Sendable {
         let componentCSS = collector.renderStylesheet()
         let themeCSS = theme.map { ThemeCSSEmitter.emit($0) } ?? ""
 
+        let pageScript = JSEmitter.emit(page: page, environment: environment)
+        var scripts: [String] = []
+        if !pageScript.isEmpty {
+            scripts.append("<script src=\"/_score/signal-polyfill.js\"></script>")
+            scripts.append("<script src=\"/_score/score-runtime.js\"></script>")
+            scripts.append(pageScript)
+        }
+
         let patch = page.metadata
         let title = DocumentAssembler.composeTitle(
             page: patch?.title ?? metadata?.title,
@@ -69,7 +81,7 @@ public enum PageRenderer: Sendable {
             themeCSS: themeCSS,
             componentCSS: componentCSS,
             bodyHTML: bodyHTML,
-            scripts: [],
+            scripts: scripts,
             activeTheme: theme?.name
         )
 
